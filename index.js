@@ -5,19 +5,19 @@ const button = document.querySelector(".search-button");
 const image = document.querySelector(".icons");
 const weatherCard =document.querySelector(".weatherCard");
 let resultData, result, description, temp, feelsLike, minTemp, maxTemp, sunrise, sunset, icon, filterData, htmlData,imgSrcIcon;
-
-//fetch url
-async function weatherApi(val){
+window.addEventListener("DOMContentLoaded",(e)=>{
+   
+  async function weatherApi(val){
     const getApi= await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${val}&appid=${appId}&units=metric`)
      result= await getApi.json()
      console.log(result)
      return result;
  }
+ 
 
 //  Add event Listener to get the city name
 button.addEventListener("click",async (event)=>{
   event.preventDefault()
-
      resultData= await weatherApi(input.value);
      filterData = domManipulation(resultData);
       console.log(filterData)
@@ -30,7 +30,7 @@ button.addEventListener("click",async (event)=>{
          
          dataInsert(filterData)
       }
-
+    
 })
 
 // manipulate the dom
@@ -54,9 +54,15 @@ function dataInsert(cardData){
     console.log(cardData.icon)
     imgSrcIcon="http://openweathermap.org/img/wn/" + filterData.icon + "@4x.png"
     htmlData=`
-<div class="card" style="width: 300px;">
-  <h1 class="card-text">${Math.floor(filterData.temp)}°</h1>
-    <img src=${imgSrcIcon} class="card-img-top" alt="...">
+ 
+<div class="card col-sm weather-card">
+<div class="container">
+<div class="row">
+<h1 class="card-text col-sm">${Math.floor(filterData.temp)}°</h1>
+    <img src=${imgSrcIcon} class="card-img-top col-sm" alt="...">
+    </div>
+</div>
+  
     <div class="card-body">
       <h2 class="card-text">${caseLetterConverter(filterData.description)}</h2>
       
@@ -87,7 +93,7 @@ function dataInsert(cardData){
         
   </div>
   </div>
-
+    
 
 `
 weatherCard.insertAdjacentHTML("afterbegin", htmlData)
@@ -115,9 +121,15 @@ function caseLetterConverter(word){
   console.log(word);
     var splitWord =word.split(" ")
      return splitWord
-    .map(el=> el[0].toUpperCase() + el.substr(1)).join(" ")
-}
+    .map(el=> el[0].toUpperCase() + el.substr(1))
+    .join(" ")
+  }
+
+  
+})
+
+//fetch url
 
 // <div class="card" style="width: 18rem;">
-  
+
 
